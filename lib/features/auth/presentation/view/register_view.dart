@@ -1,19 +1,35 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:softwarica_student_management_bloc/features/auth/presentation/view_model/signup/register_bloc.dart';
+import 'package:softwarica_student_management_bloc/features/batch/domain/entity/batch_entity.dart';
+import 'package:softwarica_student_management_bloc/features/batch/presentation/view_model/batch_bloc.dart';
+import 'package:softwarica_student_management_bloc/features/course/domain/entity/course_entity.dart';
 
-class RegisterView extends StatelessWidget {
-  RegisterView({super.key});
+class RegisterView extends StatefulWidget {
+  const RegisterView({super.key});
 
+  @override
+  State<RegisterView> createState() => _RegisterViewState();
+}
+
+class _RegisterViewState extends State<RegisterView> {
   final _gap = const SizedBox(height: 8);
 
   final _key = GlobalKey<FormState>();
 
   final _fnameController = TextEditingController(text: 'kiran');
+
   final _lnameController = TextEditingController(text: 'rana');
+
   final _phoneController = TextEditingController(text: '123456789');
+
   final _usernameController = TextEditingController(text: 'kiran');
+
   final _passwordController = TextEditingController(text: 'kiran123');
+
+  BatchEntity? _dropDownValue;
+
+  final List<CourseEntity> _lstCourseSelected = [];
 
   @override
   Widget build(BuildContext context) {
@@ -123,6 +139,28 @@ class RegisterView extends StatelessWidget {
                     }),
                   ),
                   _gap,
+                  BlocBuilder<BatchBloc, BatchState>(builder: (context, state) {
+                    return DropdownButtonFormField(
+                      items: state.batches
+                          .map((e) => DropdownMenuItem<BatchEntity>(
+                                child: Text(e.batchName),
+                              ))
+                          .toList(),
+                      onChanged: (value) {
+                        _dropDownValue = value;
+                      },
+                      value: _dropDownValue,
+                      decoration: const InputDecoration(
+                        labelText: 'Select Batch',
+                      ),
+                      validator: ((value) {
+                        if (value == null) {
+                          return 'Please select batch';
+                        }
+                        return null;
+                      }),
+                    );
+                  }),
                   // if (batchState.isLoading) ...{
                   //   const Center(
                   //     child: CircularProgressIndicator(),

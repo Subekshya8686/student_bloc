@@ -16,9 +16,11 @@ class BatchState extends Equatable {
     return BatchState(
       batches: [],
       isLoading: false,
+      error: null,
     );
   }
 
+// copywidth constructor
   BatchState copyWith({
     List<BatchEntity>? batches,
     bool? isLoading,

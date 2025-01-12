@@ -7,4 +7,6 @@ sealed class RegisterEvent extends Equatable {
   List<Object> get props => [];
 }
 
+class LoadCoursesAndBatches extends RegisterEvent {}
+
 class RegisterStudent extends RegisterEvent {}

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:softwarica_student_management_bloc/core/common/snackbar/my_snackbar.dart';
 import 'package:softwarica_student_management_bloc/features/batch/presentation/view_model/batch_bloc.dart';
 
 class BatchView extends StatelessWidget {
@@ -35,6 +36,11 @@ class BatchView extends StatelessWidget {
               ElevatedButton(
                 onPressed: () {
                   if (_batchViewFormKey.currentState!.validate()) {
+                    context.read<BatchBloc>().add(
+                          AddBatch(
+                            batchNameController.text.trim(),
+                          ),
+                        );
                     // BlocProvider.of<BatchBloc>(context).add(
                     //   AddBatch(
                     //     BatchEntity(
@@ -50,6 +56,42 @@ class BatchView extends StatelessWidget {
                   },
                 ),
               ),
+              SizedBox(height: 8),
+              BlocBuilder<BatchBloc, BatchState>(builder: (context, state) {
+                if (state.batches.isEmpty) {
+                  return Text("No data found");
+                } else if (state.isLoading) {
+                  return CircularProgressIndicator();
+                } else if (state.error != null) {
+                  return showMySnackBar(
+                    context: context,
+                    message: state.error!,
+                    color: Colors.red,
+                  );
+                } else {
+                  return Expanded(
+                    child: ListView.builder(
+                      itemCount: state.batches.length,
+                      itemBuilder: (context, index) {
+                        return ListTile(
+                          title: Text(state.batches[index].batchName),
+                          trailing: IconButton(
+                            icon: Icon(Icons.delete),
+                            onPressed: () {
+                              context.read<BatchBloc>().add(
+                                    DeleteBatch(state.batches[index].batchId!),
+                                  );
+                              // BlocProvider.of<BatchBloc>(context).add(
+                              //   DeleteBatch(state.batches[index].id),
+                              // );
+                            },
+                          ),
+                        );
+                      },
+                    ),
+                  );
+                }
+              })
             ],
           ),
         ),
