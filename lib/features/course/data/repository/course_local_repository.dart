@@ -21,7 +21,7 @@ class CourseLocalRepository implements ICourseRepository {
   }
 
   @override
-  Future<Either<Failure, void>> deleteCourse(int id) async {
+  Future<Either<Failure, void>> deleteCourse(String id) async {
     try {
       await _courseLocalDatasource.deleteCourse(id.toString());
       return Right(null);

@@ -13,6 +13,7 @@ import 'package:softwarica_student_management_bloc/features/course/data/reposito
 import 'package:softwarica_student_management_bloc/features/course/domain/use_case/create_course_usecase.dart';
 import 'package:softwarica_student_management_bloc/features/course/domain/use_case/delete_course_usecase.dart';
 import 'package:softwarica_student_management_bloc/features/course/domain/use_case/get_all_course_usecase.dart';
+import 'package:softwarica_student_management_bloc/features/course/presentation/view_model/bloc/course_bloc.dart';
 import 'package:softwarica_student_management_bloc/features/home/presentation/view_model/home_cubit.dart';
 import 'package:softwarica_student_management_bloc/features/splash/presentation/view_model/splash_cubit.dart';
 
@@ -90,6 +91,14 @@ _initCourseDependencies() async {
   //     deleteBatchUsecase: getIt<DeleteBatchUsecase>(),
   //   ),
   // );
+
+  getIt.registerFactory<CourseBloc>(
+    () => CourseBloc(
+      createCourseUsecase: getIt<CreateCourseUsecase>(),
+      getAllCourseUsecase: getIt<GetAllCourseUsecase>(),
+      deleteCourseUsecase: getIt<DeleteCourseUsecase>(),
+    ),
+  );
 }
 
 _initHomeDependencies() async {
@@ -102,7 +111,7 @@ _initRegisterDependencies() async {
   getIt.registerFactory<RegisterBloc>(
     () => RegisterBloc(
       batchBloc: getIt<BatchBloc>(),
-      // courseBloc: getIt<CourseBloc>(),
+      courseBloc: getIt<CourseBloc>(),
     ),
   );
 }

@@ -5,5 +5,5 @@ import 'package:softwarica_student_management_bloc/features/course/domain/entity
 abstract interface class ICourseRepository {
   Future<Either<Failure, void>> createCourse(CourseEntity courseEntity);
   Future<Either<Failure, List<CourseEntity>>> getAllCourses();
-  Future<Either<Failure, void>> deleteCourse(int id);
+  Future<Either<Failure, void>> deleteCourse(String id);
 }

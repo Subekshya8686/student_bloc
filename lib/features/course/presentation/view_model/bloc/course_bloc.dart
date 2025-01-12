@@ -63,7 +63,7 @@ class CourseBloc extends Bloc<CourseEvent, CourseState> {
     Emitter<CourseState> emit,
   ) async {
     emit(state.copyWith(isLoading: true));
-    final result = await _deleteCourseUsecase
+    var result = await _deleteCourseUsecase
         .call(DeleteCourseParams(courseId: event.courseId));
     result.fold(
       (failure) =>
@@ -75,4 +75,3 @@ class CourseBloc extends Bloc<CourseEvent, CourseState> {
     );
   }
 }
-

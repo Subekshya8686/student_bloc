@@ -18,7 +18,7 @@ final class AddCourse extends CourseEvent {
 }
 
 final class DeleteCourse extends CourseEvent {
-  final int courseId;
+  final String courseId;
   const DeleteCourse({required this.courseId});
 
   @override

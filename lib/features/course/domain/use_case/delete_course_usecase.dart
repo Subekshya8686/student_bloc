@@ -1,12 +1,17 @@
 import 'package:dartz/dartz.dart';
+import 'package:equatable/equatable.dart';
 import 'package:softwarica_student_management_bloc/app/usecase/usecase.dart';
 import 'package:softwarica_student_management_bloc/core/error/failure.dart';
 import 'package:softwarica_student_management_bloc/features/course/domain/repository/course_repository.dart';
 
-class DeleteCourseParams {
-  final int courseId;
+class DeleteCourseParams extends Equatable {
+  final String courseId;
 
-  DeleteCourseParams({required this.courseId});
+  const DeleteCourseParams({required this.courseId});
+
+  @override
+  // TODO: implement props
+  List<Object?> get props => [courseId];
 }
 
 class DeleteCourseUsecase
@@ -16,7 +21,7 @@ class DeleteCourseUsecase
 
   DeleteCourseUsecase({required this.repository});
   @override
-  Future<Either<Failure, void>> call(DeleteCourseParams params) {
-    return repository.deleteCourse(params.courseId);
+  Future<Either<Failure, void>> call(DeleteCourseParams params) async {
+    return await repository.deleteCourse(params.courseId);
   }
 }
