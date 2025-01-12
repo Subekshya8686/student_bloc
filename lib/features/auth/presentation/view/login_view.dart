@@ -25,13 +25,6 @@ class LoginView extends StatelessWidget {
                 padding: const EdgeInsets.all(8),
                 child: Column(
                   children: [
-                    // const Text(
-                    //   'Login',
-                    //   style: TextStyle(
-                    //     fontSize: 30,
-                    //     fontFamily: 'Brand Bold',
-                    //   ),
-                    // ),
                     BlocBuilder<LoginBloc, LoginState>(
                       builder: (context, state) {
                         return Text(
@@ -119,7 +112,7 @@ class LoginView extends StatelessWidget {
                       key: const ValueKey('registerButton'),
                       onPressed: () {
                         context.read<LoginBloc>().add(
-                          NavigateRegisterScreenEvent(
+                              NavigateRegisterScreenEvent(
                                 destination: RegisterView(),
                                 context: context,
                               ),
