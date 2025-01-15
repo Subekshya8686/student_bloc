@@ -1,5 +1,9 @@
 import 'package:get_it/get_it.dart';
 import 'package:softwarica_student_management_bloc/core/network/hive_service.dart';
+import 'package:softwarica_student_management_bloc/features/auth/data/data_source/local_datasource/student_local_datasource.dart';
+import 'package:softwarica_student_management_bloc/features/auth/data/repository/student_local_repository/student_local_repository.dart';
+import 'package:softwarica_student_management_bloc/features/auth/domain/use_case/create_student_usecase.dart';
+import 'package:softwarica_student_management_bloc/features/auth/domain/use_case/login_usecase.dart';
 import 'package:softwarica_student_management_bloc/features/auth/presentation/view_model/login/login_bloc.dart';
 import 'package:softwarica_student_management_bloc/features/auth/presentation/view_model/signup/register_bloc.dart';
 import 'package:softwarica_student_management_bloc/features/batch/data/data_source/local_datasource/batch_local_datasource.dart';
@@ -84,14 +88,6 @@ _initCourseDependencies() async {
         repository: getIt<CourseLocalRepository>(),
       ));
 
-  // getIt.registerFactory<BatchBloc>(
-  //   () => BatchBloc(
-  //     createBatchUsecase: getIt<CreateBatchUsecase>(),
-  //     getAllBatchUsecase: getIt<GetAllBatchUsecase>(),
-  //     deleteBatchUsecase: getIt<DeleteBatchUsecase>(),
-  //   ),
-  // );
-
   getIt.registerFactory<CourseBloc>(
     () => CourseBloc(
       createCourseUsecase: getIt<CreateCourseUsecase>(),
@@ -108,19 +104,46 @@ _initHomeDependencies() async {
 }
 
 _initRegisterDependencies() async {
+  // data source
+  getIt.registerLazySingleton<StudentLocalDatasource>(
+      () => StudentLocalDatasource(hiveService: getIt<HiveService>()));
+
+// repository
+  getIt.registerLazySingleton<StudentLocalRepository>(() =>
+      StudentLocalRepository(
+          studentLocalDataSource: getIt<StudentLocalDatasource>()));
+
+// Use Cases
+  getIt.registerLazySingleton<CreateStudentUsecase>(
+      () => CreateStudentUsecase(getIt<StudentLocalRepository>()));
+  // getIt.registerLazySingleton<GetAllStudentsUsecase>(
+  //     () => GetAllStudentsUsecase(getIt<StudentLocalRepository>()));
+  //
+  // getIt.registerLazySingleton<DeleteStudentUsecase>(
+  //     () => DeleteStudentUsecase(getIt<StudentLocalRepository>()));
+
+  // RegisterBloc with student-related dependencies
   getIt.registerFactory<RegisterBloc>(
     () => RegisterBloc(
       batchBloc: getIt<BatchBloc>(),
       courseBloc: getIt<CourseBloc>(),
+      createStudentUsecase: getIt(),
     ),
   );
 }
 
 _initLoginDependencies() async {
+  getIt.registerLazySingleton<LoginUseCase>(
+    () => LoginUseCase(
+      getIt<StudentLocalRepository>(),
+    ),
+  );
+
   getIt.registerFactory<LoginBloc>(
     () => LoginBloc(
       registerBloc: getIt<RegisterBloc>(),
       homeCubit: getIt<HomeCubit>(),
+      loginUseCase: getIt<LoginUseCase>(),
     ),
   );
 }
