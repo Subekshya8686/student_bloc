@@ -13,7 +13,7 @@ class CourseLocalRepository implements ICourseRepository {
   @override
   Future<Either<Failure, void>> createCourse(CourseEntity courseEntity) {
     try {
-      _courseLocalDatasource.createCourde(courseEntity);
+      _courseLocalDatasource.createCourse(courseEntity);
       return Future.value(Right(null));
     } catch (e) {
       return Future.value(Left(LocalDatabaseFailure(message: e.toString())));

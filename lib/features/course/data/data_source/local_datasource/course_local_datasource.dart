@@ -10,7 +10,7 @@ class CourseLocalDatasource implements ICourseDataSource {
       : _hiveService = hiveService;
 
   @override
-  Future<void> createCourde(CourseEntity courseEntity) async {
+  Future<void> createCourse(CourseEntity courseEntity) async {
     try {
       final courseHiveModel = CourseHiveModel.fromEntity(courseEntity);
       await _hiveService.addCourse(courseHiveModel);
