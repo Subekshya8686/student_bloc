@@ -52,7 +52,7 @@ class BatchApiModel extends Equatable {
   }
 
 // convert api list to entity list
-  List<BatchEntity> toEntityList(List<BatchApiModel> models) =>
+  static List<BatchEntity> toEntityList(List<BatchApiModel> models) =>
       models.map((model) => model.toEntity()).toList();
 
   @override
