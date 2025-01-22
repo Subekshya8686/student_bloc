@@ -81,12 +81,18 @@ _initBatchDependencies() async {
   getIt.registerLazySingleton<CreateBatchUsecase>(
       () => CreateBatchUsecase(getIt<BatchRemoteRepository>()));
 
+  // getIt.registerLazySingleton<GetAllBatchUsecase>(() => GetAllBatchUsecase(
+  //       repository: getIt<BatchLocalRepository>(),
+  //     ));
   getIt.registerLazySingleton<GetAllBatchUsecase>(() => GetAllBatchUsecase(
-        repository: getIt<BatchLocalRepository>(),
+        repository: getIt<BatchRemoteRepository>(),
       ));
 
+  // getIt.registerLazySingleton<DeleteBatchUsecase>(() => DeleteBatchUsecase(
+  //       repository: getIt<BatchLocalRepository>(),
+  //     ));
   getIt.registerLazySingleton<DeleteBatchUsecase>(() => DeleteBatchUsecase(
-        repository: getIt<BatchLocalRepository>(),
+        repository: getIt<BatchRemoteRepository>(),
       ));
 
   getIt.registerFactory<BatchBloc>(
@@ -122,12 +128,18 @@ _initCourseDependencies() async {
   getIt.registerLazySingleton<CreateCourseUsecase>(() =>
       CreateCourseUsecase(courseRepository: getIt<CourseRemoteRepository>()));
 
+  // getIt.registerLazySingleton<GetAllCourseUsecase>(() => GetAllCourseUsecase(
+  //       repository: getIt<CourseLocalRepository>(),
+  //     ));
   getIt.registerLazySingleton<GetAllCourseUsecase>(() => GetAllCourseUsecase(
-        repository: getIt<CourseLocalRepository>(),
+        repository: getIt<CourseRemoteRepository>(),
       ));
 
+  // getIt.registerLazySingleton<DeleteCourseUsecase>(() => DeleteCourseUsecase(
+  //       repository: getIt<CourseLocalRepository>(),
+  //     ));
   getIt.registerLazySingleton<DeleteCourseUsecase>(() => DeleteCourseUsecase(
-        repository: getIt<CourseLocalRepository>(),
+        repository: getIt<CourseRemoteRepository>(),
       ));
 
   getIt.registerFactory<CourseBloc>(
