@@ -53,7 +53,7 @@ class CourseApiModel extends Equatable {
   }
 
 // convert api list to entity list
-  List<CourseEntity> toEntityList(List<CourseApiModel> models) =>
+  static List<CourseEntity> toEntityList(List<CourseApiModel> models) =>
       models.map((model) => model.toEntity()).toList();
 
   @override

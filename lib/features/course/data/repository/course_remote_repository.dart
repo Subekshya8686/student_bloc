@@ -23,14 +23,30 @@ class CourseRemoteRepository implements ICourseRepository {
   }
 
   @override
-  Future<Either<Failure, void>> deleteCourse(String id) {
-    // TODO: implement deleteCourse
-    throw UnimplementedError();
+  Future<Either<Failure, void>> deleteCourse(String id) async {
+    try {
+      await _courseRemoteDatasource.deleteCourse(id);
+      return Right(null);
+    } catch (e) {
+      return Left(
+        ApiFailure(
+          message: e.toString(),
+        ),
+      );
+    }
   }
 
   @override
-  Future<Either<Failure, List<CourseEntity>>> getAllCourses() {
-    // TODO: implement getAllCourses
-    throw UnimplementedError();
+  Future<Either<Failure, List<CourseEntity>>> getAllCourses() async {
+    try {
+      final courses = await _courseRemoteDatasource.getAllCourses();
+      return Right(courses);
+    } catch (e) {
+      return Left(
+        ApiFailure(
+          message: e.toString(),
+        ),
+      );
+    }
   }
 }
