@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:multi_select_flutter/multi_select_flutter.dart';
 import 'package:softwarica_student_management_bloc/core/common/snackbar/my_snackbar.dart';
-import 'package:softwarica_student_management_bloc/features/auth/presentation/view/login_view.dart';
 import 'package:softwarica_student_management_bloc/features/auth/presentation/view_model/signup/register_bloc.dart';
 import 'package:softwarica_student_management_bloc/features/batch/domain/entity/batch_entity.dart';
 import 'package:softwarica_student_management_bloc/features/batch/presentation/view_model/batch_bloc.dart';
@@ -262,10 +261,10 @@ class _RegisterViewState extends State<RegisterView> {
                                   context: context,
                                 ),
                               );
-                          NavigateToHomeScreenEvent(
-                            context: context,
-                            destination: LoginView(),
-                          );
+                          // NavigateToHomeScreenEvent(
+                          //   context: context,
+                          //   destination: LoginView(),
+                          // );
                         } else {
                           showMySnackBar(
                             context: context,

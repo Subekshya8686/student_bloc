@@ -1,8 +1,11 @@
-import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:softwarica_student_management_bloc/app/di/di.dart';
 import 'package:softwarica_student_management_bloc/core/common/snackbar/my_snackbar.dart';
 import 'package:softwarica_student_management_bloc/features/auth/domain/use_case/create_student_usecase.dart';
+import 'package:softwarica_student_management_bloc/features/auth/presentation/view/login_view.dart';
+import 'package:softwarica_student_management_bloc/features/auth/presentation/view_model/login/login_bloc.dart';
 import 'package:softwarica_student_management_bloc/features/batch/domain/entity/batch_entity.dart';
 import 'package:softwarica_student_management_bloc/features/batch/presentation/view_model/batch_bloc.dart';
 import 'package:softwarica_student_management_bloc/features/course/domain/entity/course_entity.dart';
@@ -61,6 +64,29 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
         emit(state.copyWith(isLoading: false, isSuccess: true));
         showMySnackBar(
             message: "Registration Successful", context: event.context);
+
+        // Navigator.pushReplacement(
+        //   event.context,
+        //   MaterialPageRoute(
+        //     builder: (context) => BlocProvider.value(
+        //       value: getIt<LoginBloc>(),
+        //       child: LoginView(),
+        //     ),
+        //   ),
+        // );
+        Future.delayed(const Duration(seconds: 2), () async {
+          if (event.context.mounted) {
+            Navigator.pushReplacement(
+              event.context,
+              MaterialPageRoute(
+                builder: (context) => BlocProvider.value(
+                  value: getIt<LoginBloc>(),
+                  child: LoginView(),
+                ),
+              ),
+            );
+          }
+        });
       },
     );
   }
