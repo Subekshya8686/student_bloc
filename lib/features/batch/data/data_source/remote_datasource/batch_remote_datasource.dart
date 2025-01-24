@@ -38,7 +38,6 @@ class BatchRemoteDatasource implements IBatchDataSource {
     try {
       var response = await _dio.delete('${ApiEndpoints.deleteBatch}/$id');
       if (response.statusCode == 200) {
-        print("$response, response");
         return;
       } else {
         throw Exception(response.statusMessage);

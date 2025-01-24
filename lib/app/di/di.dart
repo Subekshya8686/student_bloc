@@ -3,6 +3,8 @@ import 'package:get_it/get_it.dart';
 import 'package:softwarica_student_management_bloc/core/network/api_service.dart';
 import 'package:softwarica_student_management_bloc/core/network/hive_service.dart';
 import 'package:softwarica_student_management_bloc/features/auth/data/data_source/local_datasource/student_local_datasource.dart';
+import 'package:softwarica_student_management_bloc/features/auth/data/data_source/remote_datasource/auth_remote_datasource.dart';
+import 'package:softwarica_student_management_bloc/features/auth/data/repository/auth_remote_repository/auth_remote_repository.dart';
 import 'package:softwarica_student_management_bloc/features/auth/data/repository/student_local_repository/student_local_repository.dart';
 import 'package:softwarica_student_management_bloc/features/auth/domain/use_case/create_student_usecase.dart';
 import 'package:softwarica_student_management_bloc/features/auth/domain/use_case/login_usecase.dart';
@@ -52,6 +54,7 @@ _initHiveService() {
 }
 
 _initBatchDependencies() async {
+  // ============================== Data Source ===============================
   //local data source
   getIt.registerLazySingleton<BatchLocalDataSource>(
       () => BatchLocalDataSource(hiveService: getIt<HiveService>()));
@@ -63,6 +66,7 @@ _initBatchDependencies() async {
     ),
   );
 
+  // ============================== Repository  ===============================
 //local repository
   getIt.registerLazySingleton<BatchLocalRepository>(
       () => BatchLocalRepository(batchLocalDataSource: getIt()));
@@ -74,6 +78,7 @@ _initBatchDependencies() async {
     ),
   );
 
+  // ============================== Use Case  ===============================
 // usecases
 //   getIt.registerLazySingleton<CreateBatchUsecase>(
 //       () => CreateBatchUsecase(getIt<BatchLocalRepository>()));
@@ -105,12 +110,14 @@ _initBatchDependencies() async {
 }
 
 _initCourseDependencies() async {
+  // ============================== Data Source ===============================
   // data source
   getIt.registerLazySingleton<CourseLocalDatasource>(
       () => CourseLocalDatasource(hiveService: getIt<HiveService>()));
   getIt.registerLazySingleton<CourseRemoteDatasource>(
       () => CourseRemoteDatasource(dio: getIt<Dio>()));
 
+  // ============================== Repository  ===============================
 // repository
   getIt.registerLazySingleton<CourseLocalRepository>(
       () => CourseLocalRepository(courseLocalDatasource: getIt()));
@@ -121,6 +128,8 @@ _initCourseDependencies() async {
       getIt<CourseRemoteDatasource>(),
     ),
   );
+
+  // ============================== Use Case  ===============================
 
 // usecases
 //   getIt.registerLazySingleton<CreateCourseUsecase>(() =>
@@ -158,18 +167,33 @@ _initHomeDependencies() async {
 }
 
 _initRegisterDependencies() async {
+  // ============================== Data Source  ===============================
   // data source
   getIt.registerLazySingleton<StudentLocalDatasource>(
       () => StudentLocalDatasource(hiveService: getIt<HiveService>()));
 
+//   data source
+  getIt.registerLazySingleton<AuthRemoteDatasource>(
+      () => AuthRemoteDatasource(getIt<Dio>()));
+
+  // ============================== Repository  ===============================
 // repository
   getIt.registerLazySingleton<StudentLocalRepository>(() =>
       StudentLocalRepository(
           studentLocalDataSource: getIt<StudentLocalDatasource>()));
 
+  getIt.registerLazySingleton(
+    () => AuthRemoteRepository(
+      getIt<AuthRemoteDatasource>(),
+    ),
+  );
+
+  // ============================== Use Case ===============================
 // Use Cases
+//   getIt.registerLazySingleton<CreateStudentUsecase>(
+//       () => CreateStudentUsecase(getIt<StudentLocalRepository>()));
   getIt.registerLazySingleton<CreateStudentUsecase>(
-      () => CreateStudentUsecase(getIt<StudentLocalRepository>()));
+      () => CreateStudentUsecase(getIt<AuthRemoteRepository>()));
   // getIt.registerLazySingleton<GetAllStudentsUsecase>(
   //     () => GetAllStudentsUsecase(getIt<StudentLocalRepository>()));
   //
@@ -187,9 +211,13 @@ _initRegisterDependencies() async {
 }
 
 _initLoginDependencies() async {
+  // getIt.registerLazySingleton<LoginUseCase>(
+  //   () => LoginUseCase(
+  //     getIt<StudentLocalRepository>(),
+  //   ),
   getIt.registerLazySingleton<LoginUseCase>(
     () => LoginUseCase(
-      getIt<StudentLocalRepository>(),
+      getIt<AuthRemoteRepository>(),
     ),
   );
 
